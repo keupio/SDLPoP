@@ -488,27 +488,45 @@ Remove it with:
 
 ### macOS
 
-#### Install SDL2 + SDL2 image
+#### Requirements
 
-##### With Homebrew
+Install Xcode and the Command Line Tools:
 
-    brew install sdl2 sdl2_image pkg-config
+    xcode-select --install
 
-##### With Port
+The native macOS bundle requires SDL2 and SDL2_image.
 
-Install "port" from https://www.macports.org/, then:
+Provide an SDL library directory containing:
 
-    sudo port install libsdl2 libsdl2_image pkgconfig
+    SDL2_ROOT/
+    ├── SDL2.framework/
+    ├── include/
+    │   └── SDL2/
+    └── lib/
+        └── libSDL2_image-2.0.0.900.0.dylib
 
-#### Install development tools
+#### Build a native macOS application bundle
 
-1. Install Xcode.
-2. Install the "command line developer tools" by typing `xcode-select --install` at the prompt.
-3. Using terminal, in the '/src' directory of SDLPoP, type: `make`
+From the project root:
+
+    cmake -S src -B build \
+      -DCREATE_BUNDLE=1 \
+      -DSDL2_ROOT=/path/to/SDL-libraries
+
+    cmake --build build
+
+The resulting application bundle will be created as:
+
+    prince.app
+
+The current bundle configuration has been tested on Apple Silicon.
 
 #### Start the game
 
-Tested on OSX 10.9.5, OSX 10.11.2, macOS 10.13 and 10.14.
+Open the application from Finder, or run:
 
-1. In the project root directory. Type `./prince` or `./prince full`.
-2. Hit Ctrl+Q to quit.
+    open prince.app
+
+The executable can also be started directly:
+
+    ./prince.app/Contents/MacOS/prince
